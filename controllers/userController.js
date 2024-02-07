@@ -25,6 +25,7 @@ module.exports = {
     const { token } = req.body;
     try {
       if (!token) {
+        res.status(401).json({ error: "Token verification failed" });
         return
       }
       const decodedToken = jwt.verify(token, secret);
