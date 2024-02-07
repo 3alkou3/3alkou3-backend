@@ -8,7 +8,7 @@ const {
   getDownloadURL,
   uploadBytesResumable,
 } = require("firebase/storage");
-const multer = require("multer")
+const multer = require("multer");
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -35,33 +35,34 @@ const multerMiddleware = multer({
 
 router.post("", multerMiddleware.single("categoryImage"), async (req, res) => {
   if (!req.file) {
-      categoryController.createCategory(req, res);
+    categoryController.createCategory(req, res);
+  } else {
+    // Set the destination path within the bucket (you may customize this)
+    const storageRef = ref(storage, `files/${req.body.name}`);
 
+    // Create file metadata including the content type
+    const metadata = {
+      contentType: req.file.mimetype,
+    };
+
+    // Upload the file in the bucket storage
+    const snapshot = await uploadBytesResumable(
+      storageRef,
+      req.file.buffer,
+      metadata
+    );
+    //by using uploadBytesResumable we can control the progress of uploading like pause, resume, cancel
+
+    // Grab the public url
+    const downloadURL = await getDownloadURL(snapshot.ref);
+
+    req.body.icon = downloadURL;
+
+    // Process the rest of your logic
+    categoryController.createCategory(req, res);
   }
 
-  // Set the destination path within the bucket (you may customize this)
-  const storageRef = ref(storage, `files/${req.body.name}`);
-
-  // Create file metadata including the content type
-  const metadata = {
-    contentType: req.file.mimetype,
-  };
-
-  // Upload the file in the bucket storage
-  const snapshot = await uploadBytesResumable(
-    storageRef,
-    req.file.buffer,
-    metadata
-  );
-  //by using uploadBytesResumable we can control the progress of uploading like pause, resume, cancel
-
-  // Grab the public url
-  const downloadURL = await getDownloadURL(snapshot.ref);
-
-  req.body.icon = downloadURL
-
-  // Process the rest of your logic
-  categoryController.createCategory(req, res);
+ 
 });
 
 router.get("", categoryController.getAllCategories);
