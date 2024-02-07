@@ -24,6 +24,9 @@ module.exports = {
   checkToken: async (req, res) => {
     const { token } = req.body;
     try {
+      if (!token) {
+        throw new Error("No token")
+      }
       const decodedToken = jwt.verify(token, secret);
       res.status(200).json({ message: "Authenticated" });
     } catch (error) {
