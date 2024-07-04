@@ -8,7 +8,8 @@ const app = express();
 // use cors
 app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    origin: '*'
+    origin: '*',
+      optionsSuccessStatus: 200,
 }))
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
