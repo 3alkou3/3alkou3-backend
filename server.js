@@ -5,17 +5,7 @@ const routes = require("./routes");
 const path = require("path")
 const app = express();
 
-// Middleware to enable CORS
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://panoramacafe.netlify.app');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
-
-app.use(cors({
-  origin: "*"
-}));
+app.use();
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
 
