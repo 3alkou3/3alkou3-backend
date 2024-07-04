@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://panoramacafe.netlify.app/"); // Update to match the requesting origin
+    res.header("Access-Control-Allow-Origin", "https://panoramacafe.netlify.app"); // Update to match the requesting origin
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
