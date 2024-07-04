@@ -5,7 +5,11 @@ const routes = require("./routes");
 const path = require("path")
 const app = express();
 
-app.use();
+// use cors
+app.use(cors({
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    origin: '*'
+}))
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
 
