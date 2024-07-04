@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "npx prisma generate && nodemon server.js",
-    "build": "npx prisma generate && node server.js",
+    "build": "npx prisma generate && node server.js"
   },
   "devDependencies": {
     "nodemon": "^3.0.3"
