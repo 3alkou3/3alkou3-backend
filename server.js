@@ -5,9 +5,7 @@ const routes = require("./routes");
 const path = require("path")
 const app = express();
 
-app.use({
-  origin: "https://panoramacafe.netlify.app"
-});
+app.use();
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
 
