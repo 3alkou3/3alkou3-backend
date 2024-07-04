@@ -5,11 +5,25 @@ const routes = require("./routes");
 const path = require("path")
 const app = express();
 
-app.use(cors({
-  origin: 'https://panoramacafe.netlify.app',
-   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
-}));
+// Middleware function for CORS
+const allowCors = (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // another common pattern
+  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+  next(); // Pass control to the next middleware or route handler
+};
+
+app.use(allowCors);
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
 
